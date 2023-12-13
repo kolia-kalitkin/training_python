@@ -22,6 +22,11 @@
 # import math
 
 
+from typing import Self
+import math
+import copy
+
+
 class Circle:
     def __init__(self, radius) -> None:
         self.radius = radius
@@ -113,20 +118,24 @@ gun.shoot()
 gun.shoot()
 
 # ---------------------------------------------------------------
+
+
 class Gun:
     def __init__(self):
         self.shoots = 0
-    
+
     def shoot(self):
         self.shoots += 1
         print(('paf', 'pif')[self.shoots % 2])
 # ---------------------------------------------------------------
 
 # from itertools import cycle
+
+
 class Gun:
     def __init__(self):
         self.sounds = cycle(('pif', 'paf'))
-        
+
     def shoot(self):
         print(next(self.sounds))
 
@@ -141,8 +150,8 @@ class Gun:
 # ---------------------------------------------------------------
 class Gun:
     def __init__(self) -> None:
-        self.cnt_call_method_shoot = 0                
-        
+        self.cnt_call_method_shoot = 0
+
     def shoot(self):
         self.cnt_call_method_shoot += 1
         # print(('paf', 'pif')[self.cnt_call_method_shoot % 2])
@@ -170,8 +179,7 @@ class Gun:
 class Scales:
     def __init__(self) -> None:
         self.cap_right = 0
-        self.cap_left = 0       
-
+        self.cap_left = 0
 
     def add_right(self, cargo_mass_right):
         self.cap_right += cargo_mass_right
@@ -186,7 +194,7 @@ class Scales:
             message = 'Правая чаша тяжелее'
         elif self.cap_left > self.cap_right:
             message = 'Левая чаша тяжелее'
-        
+
         return message
 # ---------------------------------------------------------------
 
@@ -208,10 +216,10 @@ class Scales:
 class Vector:
     def __init__(self, x=0, y=0) -> None:
         self.x = x
-        self.y = y 
+        self.y = y
 
     def abs(self):
-        return (self.x**2 + self.y**2)**0.5    
+        return (self.x**2 + self.y**2)**0.5
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -225,10 +233,12 @@ class Vector:
 #     get_odd() — метод, возвращающий список всех нечетных чисел из набора
 # Примечание 1. Числа в списках, возвращаемых методами get_even() и get_odd(), должны располагаться в том порядке, в котором они были добавлены в набор.
 # ---------------------------------------------------------------
+
+
 class Numbers:
     def __init__(self) -> None:
         self.lst = []
-    
+
     def add_number(self, num):
         self.lst.append(num)
 
@@ -237,6 +247,7 @@ class Numbers:
 
     def get_odd(self):
         return list(filter(lambda x: not x % 2, self.lst))
+
 
 numbers = Numbers()
 
@@ -264,18 +275,18 @@ print(numbers.get_odd())
 class TextHandler:
     def __init__(self) -> None:
         self.words = []
-        
-    def add_words(self, text):        
+
+    def add_words(self, text):
         for word in text.split():
-            self.words.append(word) 
-            
+            self.words.append(word)
+
     def get_shortest_words(self):
         short = min(self.words, key=len, default=None)
-        
+
         if short:
             return list(filter(lambda x: len(x) == len(short), self.words))
         return []
-    
+
     def get_longest_words(self):
         long = max(self.words, key=len, default=None)
 
@@ -283,21 +294,23 @@ class TextHandler:
             return list(filter(lambda x: len(x) == len(long), self.words))
         return []
 # -------------------ПРЕПОД--------------------------------------
+
+
 class TextHandler:
     def __init__(self):
         self.words = []
         self.shortest = 0
         self.longest = 0
-        
+
     def add_words(self, words):
         words = words.split()
         self.words.extend(words)
         self.shortest = min(map(len, self.words))
         self.longest = max(map(len, self.words))
-        
+
     def get_shortest_words(self):
         return [w for w in self.words if len(w) == self.shortest]
-    
+
     def get_longest_words(self):
         return [w for w in self.words if len(w) == self.longest]
 # ---------------------------------------------------------------
@@ -312,8 +325,8 @@ class TextHandler:
 #     add() — метод, принимающий название дела и его приоритет (целое число) и добавляющий данное дело в список дел в виде кортежа:
 #     (<название дела>, <приоритет>)
 #     get_by_priority() — метод, принимающий в качестве аргумента целое число n и возвращающий список названий дел, имеющих приоритет n
-#     get_low_priority() — метод, возвращающий список названий дел, имеющих самый низкий приоритет 
-#     get_high_priority() — метод, возвращающий список названий дел, имеющих самый высокий приоритет 
+#     get_low_priority() — метод, возвращающий список названий дел, имеющих самый низкий приоритет
+#     get_high_priority() — метод, возвращающий список названий дел, имеющих самый высокий приоритет
 # Примечание 1. Названия дел в списках, возвращаемых методами get_by_priority(), get_low_priority() и get_high_priority(), должны располагаться в том порядке, в котором они были добавлены в список.
 # ---------------------------------------------------------------
 class Todo:
@@ -321,28 +334,26 @@ class Todo:
         self.things = []
         self.priority_lst = []
 
-
     def add(self, case_name, priority):
         self.things.append((case_name, priority))
         self.priority_lst.append(priority)
-        
 
     def get_by_priority(self, n):
-        self.priority_lst.append(n)           
+        self.priority_lst.append(n)
         return [w[0] for w in self.things if w[1] == n]
 
-    def get_low_priority(self):        
-        low_low_priority = min(self.priority_lst, default=None)     
+    def get_low_priority(self):
+        low_low_priority = min(self.priority_lst, default=None)
         l1 = filter(lambda x: x[1] == low_low_priority, self.things)
         l1 = map(lambda x: x[0], l1)
         return list(l1)
-        
 
     def get_high_priority(self):
         high_priority = max(self.priority_lst, default=None)
         l1 = filter(lambda x: x[1] == high_priority, self.things)
         l1 = map(lambda x: x[0], l1)
         return list(l1)
+
 
 todo = Todo()
 
@@ -381,7 +392,6 @@ class Postman:
         '''метод, принимающий в качестве аргументов улицу, дом и квартиру, и добавляющий в список адресов эти данные в виде кортежа:  '''
         self.delivery_data.append((street, house, flat))
 
-    
     def get_houses_for_street(self, street):
         '''метод, принимающий в качестве аргумента улицу и возвращающий список всех домов на этой улице, в которые требуется доставить письма'''
         gen1 = (i[1] for i in self.delivery_data if i[0] == street)
@@ -393,19 +403,21 @@ class Postman:
         # sorted(set(x), key=lambda d: x.index(d))
         # функцию drop_duplicates из пандаса
         # збавиться от дубликатов, сохранив порядок можно через словарь
-        return l1  
-        
-    
+        return l1
+
     def get_flats_for_house(self, street, house):
         '''метод, принимающий в качестве аргументов улицу и дом и возвращающий список всех квартир в этом доме, в которые требуется доставить письма'''
-        gen1 = (i[2] for i in self.delivery_data if i[0] == street and i[1] == house)
+        gen1 = (i[2] for i in self.delivery_data if i[0]
+                == street and i[1] == house)
         l1 = []
         for i in gen1:
             if i not in l1:
                 l1.append(i)
 
-        return l1     
+        return l1
 # ---------------------препод--через словарь---------------------------------
+
+
 class Postman:
     def __init__(self):
         self.delivery_data = []
@@ -437,7 +449,6 @@ class Postman:
 # Примечание 2. Экземпляр класса Wordplay не должен зависеть от списка, на основе которого он был создан. Другими словами, если исходный список изменится, то экземпляр класса Wordplay измениться не должен.
 # ---------------------------------------------------------------
 
-import copy
 
 class Wordplay:
     def __init__(self, words=None) -> None:
@@ -453,12 +464,12 @@ class Wordplay:
     def words_with_length(self, n):
         return [word for word in self.words if len(word) == n]
 
-    def only(self, *args):        
+    def only(self, *args):
         return [word for word in self.words if set(args) >= set(word)]
-    
+
     def avoid(self, *args):
         return [word for word in self.words if set(args).isdisjoint(set(word))]
-    
+
 
 words = ['Лейбниц', 'Бэббидж', 'Нейман', 'Джобс', 'да_Винчи', 'Касперский']
 wordplay = Wordplay(words)
@@ -517,7 +528,6 @@ print(wordplay.words)
 # Примечание 2. Импортировать константу ππ можно из модуля math:
 
 # ---------------------------------------------------------------
-import math
 
 
 class Circle:
@@ -526,7 +536,7 @@ class Circle:
         self._diameter = 2 * radius
         self._area = math.pi * radius**2
 
-    def get_radius(self) -> int: 
+    def get_radius(self) -> int:
         '''метод, возвращающий радиус круга'''
         return self._radius
 
@@ -558,6 +568,9 @@ class Circle:
 # Примечание 1. Числами будем считать экземпляры классов int и float.
 # Примечание 2. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
 # ---------------------------------------------------------------
+
+from typing import Self
+
 class BankAccount:
     def __init__(self, balance=0: int | float) -> None:
         self._balance = balance
@@ -568,16 +581,31 @@ class BankAccount:
 
     def deposit(self, amount: int | float):
         '''метод, принимающий в качестве аргумента число amount и увеличивающий баланс счета на amount'''
-        return
+        self._balance += amount
 
     def withdraw(self, amount: int | float):
         '''метод, принимающий в качестве аргумента число amount и уменьшающий баланс счета на amount. Если amount превышает количество средств на балансе счета, должно быть возбуждено исключение ValueError с сообщением: На счете недостаточно средств'''
-        return
-    
-    def transfer(self, account: int | float, amount: int | float):
-        '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
-        return
+        if self._balance > amount:
+            self._balance -= amount
+        else:
+            print('На счете недостаточно средств')
+            raise ValueError
 
+    # def transfer(self: Self, account: Self, amount: int) -> None:
+    def transfer(self: 'BankAccount', account: 'BankAccount', amount: int) -> None:
+        '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
+        self.withdraw(amount)        
+        self.account = account
+        self.account.deposit(amount)
+
+
+
+account1 = BankAccount(100)
+account2 = BankAccount(200)
+
+account1.transfer(account2, 50)
+print(account1.get_balance())
+print(account2.get_balance())
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
