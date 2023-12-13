@@ -559,19 +559,23 @@ class Circle:
 # Примечание 2. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
 # ---------------------------------------------------------------
 class BankAccount:
-    def __init__(self, balance=0) -> None:
+    def __init__(self, balance=0: int | float) -> None:
         self._balance = balance
 
-    def get_balance(self):
-        return 
+    def get_balance(self) -> int | float:
+        '''метод, возвращающий актуальный баланс счета'''
+        return self._balance
 
-    def get_balance(self):
+    def deposit(self, amount: int | float):
+        '''метод, принимающий в качестве аргумента число amount и увеличивающий баланс счета на amount'''
         return
 
-    def get_balance(self):
+    def withdraw(self, amount: int | float):
+        '''метод, принимающий в качестве аргумента число amount и уменьшающий баланс счета на amount. Если amount превышает количество средств на балансе счета, должно быть возбуждено исключение ValueError с сообщением: На счете недостаточно средств'''
         return
     
-    def get_balance(self):
+    def transfer(self, account: int | float, amount: int | float):
+        '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
         return
 
 # ---------------------------------------------------------------
