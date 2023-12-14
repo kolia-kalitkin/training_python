@@ -132,12 +132,12 @@ class Gun:
 # from itertools import cycle
 
 
-class Gun:
-    def __init__(self):
-        self.sounds = cycle(('pif', 'paf'))
+# class Gun:
+#     def __init__(self):
+#         self.sounds = cycle(('pif', 'paf'))
 
-    def shoot(self):
-        print(next(self.sounds))
+#     def shoot(self):
+#         print(next(self.sounds))
 
 
 # Класс Gun2
@@ -569,43 +569,43 @@ class Circle:
 # Примечание 2. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
 # ---------------------------------------------------------------
 
-from typing import Self
+# from typing import Self
 
-class BankAccount:
-    def __init__(self, balance=0: int | float) -> None:
-        self._balance = balance
+# class BankAccount:
+#     def __init__(self, balance=0: int | float) -> None:
+#         self._balance = balance
 
-    def get_balance(self) -> int | float:
-        '''метод, возвращающий актуальный баланс счета'''
-        return self._balance
+#     def get_balance(self) -> int | float:
+#         '''метод, возвращающий актуальный баланс счета'''
+#         return self._balance
 
-    def deposit(self, amount: int | float):
-        '''метод, принимающий в качестве аргумента число amount и увеличивающий баланс счета на amount'''
-        self._balance += amount
+#     def deposit(self, amount: int | float):
+#         '''метод, принимающий в качестве аргумента число amount и увеличивающий баланс счета на amount'''
+#         self._balance += amount
 
-    def withdraw(self, amount: int | float):
-        '''метод, принимающий в качестве аргумента число amount и уменьшающий баланс счета на amount. Если amount превышает количество средств на балансе счета, должно быть возбуждено исключение ValueError с сообщением: На счете недостаточно средств'''
-        if self._balance > amount:
-            self._balance -= amount
-        else:
-            print('На счете недостаточно средств')
-            raise ValueError
+#     def withdraw(self, amount: int | float):
+#         '''метод, принимающий в качестве аргумента число amount и уменьшающий баланс счета на amount. Если amount превышает количество средств на балансе счета, должно быть возбуждено исключение ValueError с сообщением: На счете недостаточно средств'''
+#         if self._balance > amount:
+#             self._balance -= amount
+#         else:
+#             print('На счете недостаточно средств')
+#             raise ValueError
 
-    # def transfer(self: Self, account: Self, amount: int) -> None:
-    def transfer(self: 'BankAccount', account: 'BankAccount', amount: int) -> None:
-        '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
-        self.withdraw(amount)        
-        self.account = account
-        self.account.deposit(amount)       
+#     # def transfer(self: Self, account: Self, amount: int) -> None:
+#     def transfer(self: 'BankAccount', account: 'BankAccount', amount: int) -> None:
+#         '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
+#         self.withdraw(amount)        
+#         self.account = account
+#         self.account.deposit(amount)       
   
 
 
-account1 = BankAccount(100)
-account2 = BankAccount(200)
+# account1 = BankAccount(100)
+# account2 = BankAccount(200)
 
-account1.transfer(account2, 50)
-print(account1.get_balance())
-print(account2.get_balance())
+# account1.transfer(account2, 50)
+# print(account1.get_balance())
+# print(account2.get_balance())
 # ---------------------------------------------------------------
     # def transfer(self: 'BankAccount', account: 'BankAccount', amount: int) -> None:
     #     '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
@@ -676,10 +676,68 @@ class User:
 # ---------------------------------------------------------------
 
 
-#
-#
-#
+# Класс Rectangle
+# 949
+# Реализуйте класс Rectangle, описывающий прямоугольник. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     length — длина прямоугольника
+#     width — ширина прямоугольника
+# Экземпляр класса Rectangle должен иметь два атрибута:
+#     length — длина прямоугольника
+#     width — ширина прямоугольника
+# Класс Rectangle должен иметь два свойства:
+#     perimeter — свойство, доступное только для чтения, возвращающее периметр прямоугольника
+#     area — свойство, доступное только для чтения, возвращающее площадь прямоугольника
+# Примечание 1. При изменении сторон прямоугольника должны изменяться его периметр и площадь.
 # ---------------------------------------------------------------
+class Rectangle:
+    def __init__(self, length, width):
+        self._length = length
+        self._width = width
+
+    # --------------------------------------------------------
+    def get_length(self):
+        '''геттер - возвращает значение длины'''
+        return self._length
+
+    def set_length(self, length):
+        '''сеттер - меняет значение длины'''
+        self._length = length
+
+    # --------------------------------------------------------
+    def get_width(self):
+        '''геттер -  возвращает значение ширины'''
+        return self._width
+
+    def set_width(self, width):
+        '''сеттер - меняет значение ширины'''
+        self._width = width
+
+    # --------------------------------------------------------
+    def get_perimeter(self):
+        '''геттер - возвращает значение периметра'''
+        return 2 * (self._length + self._width)    
+
+    # --------------------------------------------------------
+    def get_area(self):
+        '''геттер -  возвращает значение площади'''
+        return self._length * self._width     
+    # --------------------------------------------------------
+
+
+    length = property(get_length, set_length)
+    width = property(get_width, set_width)
+    perimeter = property(get_perimeter)
+    area = property(get_area)
+
+
+rectangle = Rectangle(4, 5)
+
+print(rectangle.length)
+print(rectangle.width)
+print(rectangle.perimeter)
+print(rectangle.area)
+
+
 
 # ---------------------------------------------------------------
 
@@ -690,6 +748,7 @@ class User:
 #
 #
 # ---------------------------------------------------------------
+   
 
 # ---------------------------------------------------------------
 
