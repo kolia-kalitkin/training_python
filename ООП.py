@@ -737,31 +737,143 @@ print(rectangle.width)
 print(rectangle.perimeter)
 print(rectangle.area)
 
-
-
+# ---------------------------------------------------------------
+class Rectangle:
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+    
+    def get_perimeter(self):
+        return 2*(self.length + self.width)
+        
+    def get_area(self):
+        return self.length * self.width
+    
+    perimeter = property(get_perimeter)
+    area = property(get_area)
 # ---------------------------------------------------------------
 
+
+# Класс HourClock
+# 958
+# Реализуйте класс HourClock, описывающий часы с одной лишь часовой стрелкой. При создании экземпляра класс должен принимать один аргумент:
+#     hours — количество часов. Если hours не является целым числом, принадлежащим диапазону [1; 12], должно быть возбуждено исключение ValueError с текстом:
+#     Некорректное время
+# Класс HourClock должен иметь одно свойство:
+#     hours — свойство, доступное для чтения и записи, возвращающее текущее количество часов. При изменении свойство должно проверять, что новое значение является целым числом, принадлежащим диапазону [1; 12], в противном случае должно быть возбуждено исключение ValueError с текстом:
+#     Некорректное время
+# Примечание 1. Никаких ограничений касательно реализации класса HourClock нет, она может быть произвольной.
 # ---------------------------------------------------------------
+class HourClock:
+    def __init__(self, hours: int) -> None:
+        
+        # класс — это единая сущность, внутри можно обращаться к любому методу, даже тому, который определён позже. 
+        self.set_hours(hours)
+
+        
+
+    def get_hours(self) -> int:
+        '''геттер возвращает текущее количество часов'''
+        
+        return self._hours
 
 
-#
-#
-#
-# ---------------------------------------------------------------
+
+    def set_hours(self, hours: int) -> None:
+        '''cеттер изменяет и проверяет на корректность новое количество часов'''
+        
+        if not (isinstance(hours, int) and 1 <= hours <= 12):
+            raise ValueError('Некорректное время')
+        self._hours = hours
+
    
+ 
+    hours = property(get_hours, set_hours)
+
+
+time = HourClock(7)
+
+print(time.hours)
+time.hours = 9
+print(time.hours)
 
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
 
 
-#
-#
-#
+# Класс Person
+# 962
+# Реализуйте класс Person, описывающий человека. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     name — имя человека
+#     surname — фамилия человека
+# Экземпляр класса Person должен иметь два атрибута:
+#     name — имя человека
+#     surname — фамилия человека
+# Класс Person должен иметь одно свойство:
+#     fullname — свойство, доступное для чтения и записи, возвращающее полное имя человека в виде строки:
+#     <имя> <фамилия>
+# Примечание 1. При изменении имени и/или фамилии человека должно изменяться и его полное имя. Аналогично при изменении полного имени должны изменяться имя и фамилия.
 # ---------------------------------------------------------------
+class Person:
+    def __init__(self, name, surname) -> None:
+        self.set_person(name, surname)
+        
 
-# ---------------------------------------------------------------
+    def get_name(self) -> str:
+        '''геттер возвращает имя'''
+        return self._name
 
+    def get_surname(self) -> str:
+        '''геттер возвращает фамилию'''
+        return self._surname
+    
+    def set_name(self, name) -> None:
+        '''сеттер изменяет имя'''
+        self._name = name        
+    
+    def set_surname(self, surname: str) -> None:
+        '''сеттер изменяет фамилию'''       
+        self._surname = surname
+    
+    def get_person(self) -> str:
+        '''возвращающее полное имя человека в виде строки'''
+        return f"{self.get_name()} {self.get_surname()}"
+
+    def set_person(self, *args: str) -> None:
+        if len(args) == 1:
+            l1 = args[0].split()
+            self._name = l1[0]
+            self._surname = l1[1]
+        else:
+            self._name, self._surname = args
+
+    
+    name = property(get_name, set_name)
+    surname = property(get_surname, set_surname)  
+    fullname = property(get_person, set_person)   
+
+
+
+person = Person('Джон', 'Маккарти')
+
+person.fullname = 'Алан Тьюринг'
+print(person.name)
+print(person.surname)
+
+# -----------короче---------------------------------------
+class Person:
+    def __init__(self, name, surname):
+        self.name = name
+        self.surname = surname
+        
+    def get_fullname(self):
+        return self.name + ' ' + self.surname
+    
+    def set_fullname(self, fullname):
+        self.name, self.surname = fullname.split()
+        
+    fullname = property(get_fullname, set_fullname)
 # ---------------------------------------------------------------
 
 
