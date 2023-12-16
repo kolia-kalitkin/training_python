@@ -1016,23 +1016,198 @@ class Account:
 # ---------------------------------------------------------------
 
 
-#
-#
-#
+# Класс QuadraticPolynomial
+# 956
+# В целях безопасности в базах данных пароли от аккаунтов пользователей хранятся не в явном виде, а в виде хеш-значений — чисел, вычисленных по специальному алгоритму на основе паролей.
+# Вам доступна функция hash_function(), которая принимает в качестве аргумента пароль и возвращает его хеш-значение.
+# Реализуйте класс Account, описывающий аккаунт интернет-пользователя на некотором сервисе. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     login — логин пользователя
+#     password — пароль пользователя
+# Класс Account должен иметь два свойства:
+#     login — свойство, доступное только для чтения, возвращающее логин пользователя. При попытке изменения свойства должно быть возбуждено исключение AttributeError с текстом:
+#     Изменение логина невозможно
+#     password — свойство, доступное для чтения и записи, возвращающее хеш-значение пароля от аккаунта пользователя. При изменении свойство должно вычислять хеш-значение нового пароля и сохранять его, а не сам пароль
+# Примечание 1. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
 # ---------------------------------------------------------------
 
+
+# from typing import Tuple
+
+class QuadraticPolynomial:
+    def __init__(self, a: int | float, b: int | float, c: int | float) -> None:
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @property
+    def x1(self) -> float | None:
+        ''' свойство, доступное только для чтения, возвращающее корень1 квадратного трехчлена,'''
+        descriminant = self.b**2 - 4 * self.a * self.c
+        if descriminant >= 0:
+            return (-self.b - descriminant**0.5) / (2 * self.a)
+
+    @property
+    def x2(self) -> float | None:
+        ''' свойство, доступное только для чтения, возвращающее корень2 квадратного трехчлена'''
+        descriminant = self.b**2 - 4 * self.a * self.c
+        if descriminant >= 0:
+            return (-self.b + descriminant**0.5) / (2 * self.a)
+        
+
+    @property
+    def view(self) -> str:
+        ''' свойство, доступное только для чтения, возвращающее строку вида ax^2 + bx + c'''
+        signs = ''
+        for i in self.coefficients:
+            if i >= 0:
+                signs += '+'
+            else:
+                signs += '-'             
+        signs = signs[1:]        
+        
+        res = '{a}x^2 {} {b}x {} {c}'.format(*signs, a=self.a, b=abs(self.b), c=abs(self.c))        
+        return res
+    
+    @property
+    def coefficients(self) -> Tuple[int | float]:
+        '''геттер, доступ для чтения, возвращающее кортеж вида: (a, b, c)'''      
+        return (self.a, self.b, self.c)
+
+    @coefficients.setter
+    def coefficients(self, coefficients1) -> Tuple[int | float]:
+        '''сеттер изменяющий коэффициенты'''
+        self.a, self.b, self.c = coefficients1
+
+
+polynom = QuadraticPolynomial(1, 2, -3)
+
+polynom.coefficients = (1, -5, 6)
+print(polynom.x1)
+print(polynom.x2)
+print(polynom.view)
+# -----------------препод---------------------------------------
+class QuadraticPolynomial:
+    def __init__(self, a, b, c):
+        self.a, self.b, self.c = a, b, c
+
+    @property
+    def d(self):
+        return self.b ** 2 - 4 * self.a * self.c
+
+    @property
+    def x1(self):
+        # короткая запись if else
+        return (-self.b - self.d ** 0.5) / (2 * self.a) if self.d >= 0 else None
+
+    @property
+    def x2(self):
+        return (-self.b + self.d ** 0.5) / (2 * self.a) if self.d >= 0 else None
+
+    @property
+    def view(self):
+        b, sign_b = abs(self.b), '-' if self.b < 0 else '+'
+        c, sign_c = abs(self.c), '-' if self.c < 0 else '+'
+        return f'{self.a}x^2 {sign_b} {b}x {sign_c} {c}'
+
+    @property
+    def coefficients(self):
+        return self.a, self.b, self.c
+
+    @coefficients.setter
+    def coefficients(self, coeff):
+        a, b, c = coeff
+        self.a, self.b, self.c = a, b, c
 # ---------------------------------------------------------------
 
+
+# Класс Color
+# 873
+# Для кодирования цвета часто используется шестнадцатеричное значение цвета. Оно записывается в формате #RRGGBB, где RR (красный), GG (зеленый) и BB (синий) являются шестнадцатеричными целыми числами в диапазоне [00; FF] (или [0; 255] в десятичной системе счисления), которые указывают интенсивность соответствующих цветов. Например, #0000FF представляет чистый синий цвет, так как синий компонент имеет наивысшее значение (FF), а остальные — 00.
+# Реализуйте класс Color, описывающий цвет. При создании экземпляра класс должен принимать один аргумент:
+#     hexcode — шестнадцатеричное значение цвета 
+# Экземпляр класса Color должен иметь три атрибута:
+#     r — интенсивность красного компонента цвета в виде десятичного числа
+#     g — интенсивность зеленого компонента цвета в виде десятичного числа
+#     b — интенсивность синего компонента цвета в виде десятичного числа
+# Класс Color должен иметь одно свойство:
+#     hexcode — свойство, доступное для чтения и записи, возвращающее шестнадцатеричное значение цвета
+# Примечание 1. При изменении шестнадцатеричного значения цвета значения атрибутов r, g и b также должны изменяться.
+# Примечание 2. Гарантируется, что для записи шестнадцатеричных чисел используются только заглавные латинские буквы.
 # ---------------------------------------------------------------
 
 
-#
-#
-#
-# ---------------------------------------------------------------
+class Color:
+    def __init__(self, hexcode: str) -> None:
+        self._hexcode = hexcode            
+        self.r = hex_to_ten(self._hexcode[:2])
+        self.g = hex_to_ten(self._hexcode[2:4])
+        self.b = hex_to_ten(self._hexcode[4:])
+    
+    # ---------------------------------------------------------------
+    @property
+    def hexcode(self) -> str:
+        '''геттер, возвращает шестнадцатеричное значение цвета'''
+        return self._hexcode
 
-# ---------------------------------------------------------------
+    @hexcode.setter
+    def hexcode(self, hexcode: str) -> None:
+        '''сеттер, для изменения цвета'''        
+        self._hexcode = hexcode
+        self.r = hex_to_ten(hexcode[:2])
+        self.g = hex_to_ten(hexcode[2:4])
+        self.b = hex_to_ten(hexcode[4:])
+    # ---------------------------------------------------------------
+    
+    
+    
+# оказывается :) функция int переводит число из десятичного в шестнадцатиричное, переводит число из десятичного в двоичное или другое    
+def hex_to_ten(hex_num: str) -> int:
+    '''ф-я принимает шестнадцатеричное значение цвета и возвращает цвет в виде десятичного числа'''
+    dict_hex = {'0': 0, 
+                '1': 1, 
+                '2': 2, 
+                '3': 3,
+                '4': 4, 
+                '5': 5, 
+                '6': 6, 
+                '7': 7, 
+                '8': 8, 
+                '9': 9,
+                "A": 10, 
+                "B": 11, 
+                "C": 12, 
+                "D": 13, 
+                "E": 14, 
+                "F": 15}
+        
+    return sum((dict_hex[num_hex]) * 16**pow_index  for pow_index, num_hex in enumerate(reversed(hex_num)))
 
+
+
+color = Color('0000FF')
+
+color.hexcode = 'A782E3'
+print(color.hexcode)
+print(color.r)
+print(color.g)
+print(color.b)
+# -----------------препод--------------------------------------
+class Color:
+    def __init__(self, hexcode):
+        self.hexcode = hexcode
+    
+    @property
+    def hexcode(self):
+        return self._hexcode
+    
+    @hexcode.setter
+    def hexcode(self, hexcode):
+        self._hexcode = hexcode
+
+        # функция int переводит число из десятичного в шестнадцатиричное, переводит число из десятичного в двоичное или другое 
+        self.r = int(hexcode[0:2], 16)
+        self.g = int(hexcode[2:4], 16)
+        self.b = int(hexcode[4:6], 16)
 # ---------------------------------------------------------------
 
 
