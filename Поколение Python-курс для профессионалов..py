@@ -6056,9 +6056,40 @@ print(*sorted(input(), key=lambda s: (not s.isalpha(),
 # Функция должна возвращать словарь, ключом в котором является хеш-значение объекта из списка objects, а значением — сам объект. Если хеш-значения некоторых объектов совпадают, их следует объединить в список.
 # Примечание 1. Элементы в возвращаемом функцией словаре, а также объекты в списке, имеющие равные хеш-значения, должны располагаться в своем исходном порядке.
 # ---------------------------------------------------------------------------
+def hash_as_key(objects):
+    
+    dict1 = {}
 
+    for i in objects:
+        hash_i =  hash(i) 
+                      
+        if hash_i not in dict1:
+            dict1.setdefault(hash_i, i)
+        else:
+            a = dict1[hash_i]  
+
+            if isinstance(a, list):
+                a.append(i)
+            else:
+                dict1[hash_i] = []
+                dict1[hash_i].append(a)                
+                dict1[hash_i].append(i)
+    
+    return dict1
+
+data = [(1, 2, 3), (1, 2, 3), (0, 0, 0), 10, (144, 75, 60), 20, 30]
+
+print(hash_as_key(data))
 # ---------------------------------------------------------------------------
-
+def hash_as_key(objects):
+    
+    from collections import Counter
+    
+    hashes = [hash(obj) for obj in objects]
+    hc, res = Counter(hashes), dict()
+    for h, o in zip(hashes, objects):
+        res[h] = res.get(h, []) + [o] if hc[h] > 1 else o
+    return res
 # ===========================================================================
 
 

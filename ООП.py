@@ -1640,20 +1640,62 @@ relativedelta(date1, date2).years
 # ---------------------------------------------------------------
 
 
+# Класс Config
 #
-#
-#
+# Реализуйте класс Config, который соответствует шаблону синглтон и описывает конфигурационный объект с фиксированными параметрами. При создании экземпляра класс не должен принимать никаких аргументов.
+# При первом вызове класса Config должен создаваться и возвращаться экземпляр этого класса, а при последующих вызовах должен возвращаться экземпляр, созданный при первом вызове.
+# Экземпляр класса Config должен иметь четыре атрибута:
+#     program_name — атрибут со строковым значением GenerationPy
+#     environment — атрибут со строковым значением release
+#     loglevel — атрибут со строковым значением verbose
+#     version — атрибут со строковым значением 1.0.0
+# ---------------------------------------------------------------
+
+class Config:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:                       # при первом вызове создаем объект
+            cls._instance = object.__new__(cls)
+        return cls._instance                      
+
+    def __init__(self) -> None:
+        self.program_name = 'GenerationPy'
+        self.environment = 'release'
+        self.loglevel = 'verbose'
+        self.version = '1.0.0'
+
+
+config = Config()
+
+print(config.program_name)
+print(config.environment)
+print(config.loglevel)
+print(config.version)
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
 
-# ---------------------------------------------------------------
-
 
 #
 #
 #
 # ---------------------------------------------------------------
+def hash_as_key(objects):
+    
+    dict1 = {}
+
+    for i in objects:        
+        if i not in dict1:
+            dict1.setdefault(i, i)
+        else:
+            if not isinstance(dict1[i], list):
+                dict1[i] = [].append(dict1.get(i))
+            else:
+                dict1[i].append(dict1.get(i))
+
+    
+    return dict1
 
 # ---------------------------------------------------------------
 
