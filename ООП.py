@@ -22,6 +22,11 @@
 # import math
 
 
+from dateutil.relativedelta import relativedelta
+from datetime import date, timedelta
+from functools import singledispatchmethod
+import re
+import string
 from typing import Self
 import math
 import copy
@@ -385,15 +390,15 @@ print(todo.get_by_priority(3))
 
 class Postman:
     def __init__(self) -> None:
-        # '''изначально пустой список адресов, по которым следует доставить письма'''
+        # """изначально пустой список адресов, по которым следует доставить письма"""
         self.delivery_data = []
 
     def add_delivery(self, street, house, flat):
-        '''метод, принимающий в качестве аргументов улицу, дом и квартиру, и добавляющий в список адресов эти данные в виде кортежа:  '''
+        """метод, принимающий в качестве аргументов улицу, дом и квартиру, и добавляющий в список адресов эти данные в виде кортежа:  """
         self.delivery_data.append((street, house, flat))
 
     def get_houses_for_street(self, street):
-        '''метод, принимающий в качестве аргумента улицу и возвращающий список всех домов на этой улице, в которые требуется доставить письма'''
+        """метод, принимающий в качестве аргумента улицу и возвращающий список всех домов на этой улице, в которые требуется доставить письма"""
         gen1 = (i[1] for i in self.delivery_data if i[0] == street)
         # удаляет дубликат списка
         l1 = []
@@ -406,7 +411,7 @@ class Postman:
         return l1
 
     def get_flats_for_house(self, street, house):
-        '''метод, принимающий в качестве аргументов улицу и дом и возвращающий список всех квартир в этом доме, в которые требуется доставить письма'''
+        """метод, принимающий в качестве аргументов улицу и дом и возвращающий список всех квартир в этом доме, в которые требуется доставить письма"""
         gen1 = (i[2] for i in self.delivery_data if i[0]
                 == street and i[1] == house)
         l1 = []
@@ -537,15 +542,15 @@ class Circle:
         self._area = math.pi * radius**2
 
     def get_radius(self) -> int:
-        '''метод, возвращающий радиус круга'''
+        """метод, возвращающий радиус круга"""
         return self._radius
 
     def get_diameter(self) -> int:
-        '''метод, возвращающий диаметр круга'''
+        """метод, возвращающий диаметр круга"""
         return self._diameter
 
     def get_area(self) -> int:
-        '''метод, возвращающий площадь круга'''
+        """метод, возвращающий площадь круга"""
         return self._area
 # ---------------------------------------------------------------
 
@@ -576,15 +581,15 @@ class Circle:
 #         self._balance = balance
 
 #     def get_balance(self) -> int | float:
-#         '''метод, возвращающий актуальный баланс счета'''
+#         """метод, возвращающий актуальный баланс счета"""
 #         return self._balance
 
 #     def deposit(self, amount: int | float):
-#         '''метод, принимающий в качестве аргумента число amount и увеличивающий баланс счета на amount'''
+#         """метод, принимающий в качестве аргумента число amount и увеличивающий баланс счета на amount"""
 #         self._balance += amount
 
 #     def withdraw(self, amount: int | float):
-#         '''метод, принимающий в качестве аргумента число amount и уменьшающий баланс счета на amount. Если amount превышает количество средств на балансе счета, должно быть возбуждено исключение ValueError с сообщением: На счете недостаточно средств'''
+#         """метод, принимающий в качестве аргумента число amount и уменьшающий баланс счета на amount. Если amount превышает количество средств на балансе счета, должно быть возбуждено исключение ValueError с сообщением: На счете недостаточно средств"""
 #         if self._balance > amount:
 #             self._balance -= amount
 #         else:
@@ -593,11 +598,10 @@ class Circle:
 
 #     # def transfer(self: Self, account: Self, amount: int) -> None:
 #     def transfer(self: 'BankAccount', account: 'BankAccount', amount: int) -> None:
-#         '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
-#         self.withdraw(amount)        
+#         """метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: """
+#         self.withdraw(amount)
 #         self.account = account
-#         self.account.deposit(amount)       
-  
+#         self.account.deposit(amount)
 
 
 # account1 = BankAccount(100)
@@ -608,10 +612,10 @@ class Circle:
 # print(account2.get_balance())
 # ---------------------------------------------------------------
     # def transfer(self: 'BankAccount', account: 'BankAccount', amount: int) -> None:
-    #     '''метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: '''
-    #     self.withdraw(amount)        
+    #     """метод, принимающий в качестве аргументов банковский счет account и число amount. Метод должен уменьшать баланс текущего счета на amount и увеличивать баланс счета account на amount. Если amount превышает количество средств на балансе текущего счета, должно быть возбуждено исключение ValueError с сообщением: """
+    #     self.withdraw(amount)
     #     self.account = account
-    #     self.account.deposit(amount)    
+    #     self.account.deposit(amount)
 # ---------------------------------------------------------------
 
 
@@ -635,41 +639,38 @@ class Circle:
 # Примечание 1. Если при создании экземпляра класса User имя и возраст одновременно являются некорректными, должно быть возбуждено исключение, связанное с именем.
 # ---------------------------------------------------------------
 class User:
-    def __init__(self, name: str, age: int) -> None:        
-        
-        # класс — это единая сущность, внутри можно обращаться к любому методу, даже тому, который определён позже. 
+    def __init__(self, name: str, age: int) -> None:
+
+        # класс — это единая сущность, внутри можно обращаться к любому методу, даже тому, который определён позже.
         self.set_name(name)
         self.set_age(age)
-        
+
         self._name = name
         self._age = age
 
-
     def get_name(self):
-        '''метод, возвращающий имя пользователя'''
+        """метод, возвращающий имя пользователя"""
         return self._name
 
     def get_age(self):
-        '''метод, возвращающий возраст пользователя'''
+        """метод, возвращающий возраст пользователя"""
         return self._age
 
-
-
     # Сеттер1
+
     def set_name(self, new_name: str):
-        '''метод, принимающий в качестве аргумента значение new_name и изменяющий имя пользователя на new_name. Если new_name не является непустой строкой, состоящей только из букв, должно быть возбуждено исключение ValueError с текстом: '''
+        """метод, принимающий в качестве аргумента значение new_name и изменяющий имя пользователя на new_name. Если new_name не является непустой строкой, состоящей только из букв, должно быть возбуждено исключение ValueError с текстом: """
         if isinstance(new_name, str) and new_name.isalpha():
             self._name = new_name
         else:
             raise ValueError('Некорректное имя')
-    
 
     # Сеттер2
-    def set_age(self, new_age: int): 
-        '''метод, принимающий в качестве аргумента значение new_age и изменяющий возраст пользователя на new_age. Если new_age не является целым числом, принадлежащим отрезку [0; 110], должно быть возбуждено исключение ValueError с текстом: '''
-        if isinstance(new_age, int) and 0 <=new_age <=110:
+    def set_age(self, new_age: int):
+        """метод, принимающий в качестве аргумента значение new_age и изменяющий возраст пользователя на new_age. Если new_age не является целым числом, принадлежащим отрезку [0; 110], должно быть возбуждено исключение ValueError с текстом: """
+        if isinstance(new_age, int) and 0 <= new_age <= 110:
             self._age = new_age
-        else:            
+        else:
             raise ValueError('Некорректный возраст')
 # ---------------------------------------------------------------
 
@@ -696,33 +697,32 @@ class Rectangle:
 
     # --------------------------------------------------------
     def get_length(self):
-        '''геттер - возвращает значение длины'''
+        """геттер - возвращает значение длины"""
         return self._length
 
     def set_length(self, length):
-        '''сеттер - меняет значение длины'''
+        """сеттер - меняет значение длины"""
         self._length = length
 
     # --------------------------------------------------------
     def get_width(self):
-        '''геттер -  возвращает значение ширины'''
+        """геттер -  возвращает значение ширины"""
         return self._width
 
     def set_width(self, width):
-        '''сеттер - меняет значение ширины'''
+        """сеттер - меняет значение ширины"""
         self._width = width
 
     # --------------------------------------------------------
     def get_perimeter(self):
-        '''геттер - возвращает значение периметра'''
-        return 2 * (self._length + self._width)    
+        """геттер - возвращает значение периметра"""
+        return 2 * (self._length + self._width)
 
     # --------------------------------------------------------
     def get_area(self):
-        '''геттер -  возвращает значение площади'''
-        return self._length * self._width     
+        """геттер -  возвращает значение площади"""
+        return self._length * self._width
     # --------------------------------------------------------
-
 
     length = property(get_length, set_length)
     width = property(get_width, set_width)
@@ -738,17 +738,19 @@ print(rectangle.perimeter)
 print(rectangle.area)
 
 # ---------------------------------------------------------------
+
+
 class Rectangle:
     def __init__(self, length, width):
         self.length = length
         self.width = width
-    
+
     def get_perimeter(self):
         return 2*(self.length + self.width)
-        
+
     def get_area(self):
         return self.length * self.width
-    
+
     perimeter = property(get_perimeter)
     area = property(get_area)
 # ---------------------------------------------------------------
@@ -766,28 +768,22 @@ class Rectangle:
 # ---------------------------------------------------------------
 class HourClock:
     def __init__(self, hours: int) -> None:
-        
-        # класс — это единая сущность, внутри можно обращаться к любому методу, даже тому, который определён позже. 
+
+        # класс — это единая сущность, внутри можно обращаться к любому методу, даже тому, который определён позже.
         self.set_hours(hours)
 
-        
-
     def get_hours(self) -> int:
-        '''геттер возвращает текущее количество часов'''
-        
+        """геттер возвращает текущее количество часов"""
+
         return self._hours
 
-
-
     def set_hours(self, hours: int) -> None:
-        '''cеттер изменяет и проверяет на корректность новое количество часов'''
-        
+        """cеттер изменяет и проверяет на корректность новое количество часов"""
+
         if not (isinstance(hours, int) and 1 <= hours <= 12):
             raise ValueError('Некорректное время')
         self._hours = hours
 
-   
- 
     hours = property(get_hours, set_hours)
 
 
@@ -818,26 +814,25 @@ print(time.hours)
 class Person:
     def __init__(self, name, surname) -> None:
         self.set_person(name, surname)
-        
 
     def get_name(self) -> str:
-        '''геттер возвращает имя'''
+        """геттер возвращает имя"""
         return self._name
 
     def get_surname(self) -> str:
-        '''геттер возвращает фамилию'''
+        """геттер возвращает фамилию"""
         return self._surname
-    
+
     def set_name(self, name) -> None:
-        '''сеттер изменяет имя'''
-        self._name = name        
-    
+        """сеттер изменяет имя"""
+        self._name = name
+
     def set_surname(self, surname: str) -> None:
-        '''сеттер изменяет фамилию'''       
+        """сеттер изменяет фамилию"""
         self._surname = surname
-    
+
     def get_person(self) -> str:
-        '''возвращающее полное имя человека в виде строки'''
+        """возвращающее полное имя человека в виде строки"""
         return f"{self.get_name()} {self.get_surname()}"
 
     def set_person(self, *args: str) -> None:
@@ -848,11 +843,9 @@ class Person:
         else:
             self._name, self._surname = args
 
-    
     name = property(get_name, set_name)
-    surname = property(get_surname, set_surname)  
-    fullname = property(get_person, set_person)   
-
+    surname = property(get_surname, set_surname)
+    fullname = property(get_person, set_person)
 
 
 person = Person('Джон', 'Маккарти')
@@ -862,20 +855,21 @@ print(person.name)
 print(person.surname)
 
 # -----------короче---------------------------------------
+
+
 class Person:
     def __init__(self, name, surname):
         self.name = name
         self.surname = surname
-        
+
     def get_fullname(self):
         return self.name + ' ' + self.surname
-    
+
     def set_fullname(self, fullname):
         self.name, self.surname = fullname.split()
-        
+
     fullname = property(get_fullname, set_fullname)
 # ---------------------------------------------------------------
-
 
 
 #  Person
@@ -899,13 +893,14 @@ class Person:
 
     @property
     def fullname(self):
-        return "{} {}".format(self.name, self.surname)   
+        return "{} {}".format(self.name, self.surname)
 
     @fullname.setter
     def fullname(self, fullname):
         self.name, self.surname = fullname.split()
-        
+
 # БЕЗ ДЕКОРАТОРА
+
 
 class Person:
     def __init__(self, name, surname):
@@ -945,16 +940,16 @@ class Person:
 class Account:
     def __init__(self, login, password) -> None:
         self._login = login
-        self._password = hash_function(password)    
-    
+        self._password = hash_function(password)
 
     # ---------------------------------------------------------------
+
     @property
     def login(self):        # свойство доступно только для чтения (сеттер выдаст ошибку при попытке изменить логин)
         return self._login
 
     @login.setter
-    def login(self, login):       
+    def login(self, login):
         raise AttributeError('Изменение логина невозможно')
     # ---------------------------------------------------------------
 
@@ -963,20 +958,16 @@ class Account:
         return self._password
 
     @password.setter
-    def password(self, password):        
+    def password(self, password):
         self._password = hash_function(password)
-        
-        
+
+
 def hash_function(password):
-    '''ф-я принимает в качестве аргумента пароль и возвращает его хеш-значение.'''
+    """ф-я принимает в качестве аргумента пароль и возвращает его хеш-значение."""
     hash_value = 0
     for char, index in zip(password, range(len(password))):
         hash_value += ord(char) * index
     return hash_value % 10**9
-
-
-
-
 
 
 account = Account('timyr-guev', 'lovebeegeek')
@@ -986,6 +977,8 @@ account.password = 'verylovebeegeek'
 print(account.password)
 
 # ------------------препод-------------------------------------
+
+
 def hash_function(password):
     hash_value = 0
     for char, index in zip(password, range(len(password))):
@@ -1005,7 +998,7 @@ class Account:
     @login.setter
     def login(self, login):
         raise AttributeError('Изменение логина невозможно')
-            
+
     @property
     def password(self):
         return self._password
@@ -1041,41 +1034,41 @@ class QuadraticPolynomial:
 
     @property
     def x1(self) -> float | None:
-        ''' свойство, доступное только для чтения, возвращающее корень1 квадратного трехчлена,'''
+        """ свойство, доступное только для чтения, возвращающее корень1 квадратного трехчлена,"""
         descriminant = self.b**2 - 4 * self.a * self.c
         if descriminant >= 0:
             return (-self.b - descriminant**0.5) / (2 * self.a)
 
     @property
     def x2(self) -> float | None:
-        ''' свойство, доступное только для чтения, возвращающее корень2 квадратного трехчлена'''
+        """ свойство, доступное только для чтения, возвращающее корень2 квадратного трехчлена"""
         descriminant = self.b**2 - 4 * self.a * self.c
         if descriminant >= 0:
             return (-self.b + descriminant**0.5) / (2 * self.a)
-        
 
     @property
     def view(self) -> str:
-        ''' свойство, доступное только для чтения, возвращающее строку вида ax^2 + bx + c'''
+        """ свойство, доступное только для чтения, возвращающее строку вида ax^2 + bx + c"""
         signs = ''
         for i in self.coefficients:
             if i >= 0:
                 signs += '+'
             else:
-                signs += '-'             
-        signs = signs[1:]        
-        
-        res = '{a}x^2 {} {b}x {} {c}'.format(*signs, a=self.a, b=abs(self.b), c=abs(self.c))        
+                signs += '-'
+        signs = signs[1:]
+
+        res = '{a}x^2 {} {b}x {} {c}'.format(
+            *signs, a=self.a, b=abs(self.b), c=abs(self.c))
         return res
-    
+
     @property
     def coefficients(self) -> Tuple[int | float]:
-        '''геттер, доступ для чтения, возвращающее кортеж вида: (a, b, c)'''      
+        """геттер, доступ для чтения, возвращающее кортеж вида: (a, b, c)"""
         return (self.a, self.b, self.c)
 
     @coefficients.setter
     def coefficients(self, coefficients1) -> Tuple[int | float]:
-        '''сеттер изменяющий коэффициенты'''
+        """сеттер изменяющий коэффициенты"""
         self.a, self.b, self.c = coefficients1
 
 
@@ -1086,6 +1079,8 @@ print(polynom.x1)
 print(polynom.x2)
 print(polynom.view)
 # -----------------препод---------------------------------------
+
+
 class QuadraticPolynomial:
     def __init__(self, a, b, c):
         self.a, self.b, self.c = a, b, c
@@ -1124,7 +1119,7 @@ class QuadraticPolynomial:
 # 873
 # Для кодирования цвета часто используется шестнадцатеричное значение цвета. Оно записывается в формате #RRGGBB, где RR (красный), GG (зеленый) и BB (синий) являются шестнадцатеричными целыми числами в диапазоне [00; FF] (или [0; 255] в десятичной системе счисления), которые указывают интенсивность соответствующих цветов. Например, #0000FF представляет чистый синий цвет, так как синий компонент имеет наивысшее значение (FF), а остальные — 00.
 # Реализуйте класс Color, описывающий цвет. При создании экземпляра класс должен принимать один аргумент:
-#     hexcode — шестнадцатеричное значение цвета 
+#     hexcode — шестнадцатеричное значение цвета
 # Экземпляр класса Color должен иметь три атрибута:
 #     r — интенсивность красного компонента цвета в виде десятичного числа
 #     g — интенсивность зеленого компонента цвета в виде десятичного числа
@@ -1138,50 +1133,48 @@ class QuadraticPolynomial:
 
 class Color:
     def __init__(self, hexcode: str) -> None:
-        self._hexcode = hexcode            
+        self._hexcode = hexcode
         self.r = hex_to_ten(self._hexcode[:2])
         self.g = hex_to_ten(self._hexcode[2:4])
         self.b = hex_to_ten(self._hexcode[4:])
-    
+
     # ---------------------------------------------------------------
     @property
     def hexcode(self) -> str:
-        '''геттер, возвращает шестнадцатеричное значение цвета'''
+        """геттер, возвращает шестнадцатеричное значение цвета"""
         return self._hexcode
 
     @hexcode.setter
     def hexcode(self, hexcode: str) -> None:
-        '''сеттер, для изменения цвета'''        
+        """сеттер, для изменения цвета"""
         self._hexcode = hexcode
         self.r = hex_to_ten(hexcode[:2])
         self.g = hex_to_ten(hexcode[2:4])
         self.b = hex_to_ten(hexcode[4:])
     # ---------------------------------------------------------------
-    
-    
-    
-# оказывается :) функция int переводит число из десятичного в шестнадцатиричное, переводит число из десятичного в двоичное или другое    
-def hex_to_ten(hex_num: str) -> int:
-    '''ф-я принимает шестнадцатеричное значение цвета и возвращает цвет в виде десятичного числа'''
-    dict_hex = {'0': 0, 
-                '1': 1, 
-                '2': 2, 
-                '3': 3,
-                '4': 4, 
-                '5': 5, 
-                '6': 6, 
-                '7': 7, 
-                '8': 8, 
-                '9': 9,
-                "A": 10, 
-                "B": 11, 
-                "C": 12, 
-                "D": 13, 
-                "E": 14, 
-                "F": 15}
-        
-    return sum((dict_hex[num_hex]) * 16**pow_index  for pow_index, num_hex in enumerate(reversed(hex_num)))
 
+
+# оказывается :) функция int переводит число из десятичного в шестнадцатиричное, переводит число из десятичного в двоичное или другое
+def hex_to_ten(hex_num: str) -> int:
+    """ф-я принимает шестнадцатеричное значение цвета и возвращает цвет в виде десятичного числа"""
+    dict_hex = {'0': 0,
+                '1': 1,
+                '2': 2,
+                '3': 3,
+                '4': 4,
+                '5': 5,
+                '6': 6,
+                '7': 7,
+                '8': 8,
+                '9': 9,
+                "A": 10,
+                "B": 11,
+                "C": 12,
+                "D": 13,
+                "E": 14,
+                "F": 15}
+
+    return sum((dict_hex[num_hex]) * 16**pow_index for pow_index, num_hex in enumerate(reversed(hex_num)))
 
 
 color = Color('0000FF')
@@ -1192,19 +1185,21 @@ print(color.r)
 print(color.g)
 print(color.b)
 # -----------------препод--------------------------------------
+
+
 class Color:
     def __init__(self, hexcode):
         self.hexcode = hexcode
-    
+
     @property
     def hexcode(self):
         return self._hexcode
-    
+
     @hexcode.setter
     def hexcode(self, hexcode):
         self._hexcode = hexcode
 
-        # функция int переводит число из десятичного в шестнадцатиричное, переводит число из десятичного в двоичное или другое 
+        # функция int переводит число из десятичного в шестнадцатиричное, переводит число из десятичного в двоичное или другое
         self.r = int(hexcode[0:2], 16)
         self.g = int(hexcode[2:4], 16)
         self.b = int(hexcode[4:6], 16)
@@ -1226,9 +1221,9 @@ class Circle:
 
     @classmethod
     def from_diameter(cls, diametr: int | float) -> int | float:
-        '''метод класса, принимающий в качестве аргумента диаметр круга и возвращающий экземпляр класса Circle, созданный на основе переданного диаметра'''
+        """метод класса, принимающий в качестве аргумента диаметр круга и возвращающий экземпляр класса Circle, созданный на основе переданного диаметра"""
 
-        return  cls(diametr / 2)
+        return cls(diametr / 2)
 
 
 circle = Circle.from_diameter(10)
@@ -1256,7 +1251,7 @@ class Rectangle:
 
     @classmethod
     def square(cls, side: int | float) -> 'Rectangle':
-        ''' метод класса, принимающий в качестве аргумента число side и возвращающий экземпляр класса '''
+        """ метод класса, принимающий в качестве аргумента число side и возвращающий экземпляр класса """
         return cls(side, side)
 
 
@@ -1282,7 +1277,7 @@ print(rectangle.width)
 #     c — коэффициент cc квадратного трехчлена
 # Класс QuadraticPolynomial должен иметь два метода класса:
 #     from_iterable() — метод, принимающий в качестве аргумента итерируемый объект из трех элементов a, b и c, которые представляют коэффициенты квадратного трехчлена, и возвращающий экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов
-#     from_str() — метод, принимающий в качестве аргумента строку, которая содержит коэффициенты a, b и c квадратного трехчлена, записанные через пробел. Метод должен возвращать экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов, предварительно преобразованных в экземпляры класса float 
+#     from_str() — метод, принимающий в качестве аргумента строку, которая содержит коэффициенты a, b и c квадратного трехчлена, записанные через пробел. Метод должен возвращать экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов, предварительно преобразованных в экземпляры класса float
 # ---------------------------------------------------------------
 
 # from typing import TypeVar
@@ -1297,12 +1292,12 @@ class QuadraticPolynomial:
 
     @classmethod
     def from_iterable(cls, iterable) -> 'QuadraticPolynomial':
-        '''метод класса, принимающий в качестве аргумента итерируемый объект из трех элементов a, b и c, которые представляют коэффициенты квадратного трехчлена, и возвращающий экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов'''
+        """метод класса, принимающий в качестве аргумента итерируемый объект из трех элементов a, b и c, которые представляют коэффициенты квадратного трехчлена, и возвращающий экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов"""
         return cls(*iterable)
 
     @classmethod
     def from_str(cls, string) -> 'QuadraticPolynomial':
-        '''метод класса, принимающий в качестве аргумента итерируемый объект из трех элементов a, b и c, которые представляют коэффициенты квадратного трехчлена, и возвращающий экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов'''
+        """метод класса, принимающий в качестве аргумента итерируемый объект из трех элементов a, b и c, которые представляют коэффициенты квадратного трехчлена, и возвращающий экземпляр класса QuadraticPolynomial, созданный на основе переданных коэффициентов"""
         iterable = map(float, string.split())
         return cls(iterable)
 # ---------------------------------------------------------------
@@ -1326,23 +1321,24 @@ class Pet:
     def __init__(self, name):
         self.name = name
         Pet.pets.append(self)   # передаём весь экземпляр
-        
-      
+
     @classmethod
-    def first_pet(cls): # в методах класса нужно брать его из списка
+    def first_pet(cls):  # в методах класса нужно брать его из списка
         if cls.pets:
-            return cls.pets[0]    
+            return cls.pets[0]
 
     @classmethod
     def last_pet(cls):
         if cls.pets:
-            return cls.pets[-1]   
+            return cls.pets[-1]
 
     @classmethod
     def num_of_pets(cls):
         return len(cls.pets)
-        
+
 # ----------------------------------------
+
+
 class Pet:
     pets = []
 
@@ -1374,33 +1370,33 @@ class Pet:
 # Примечание 1. Гарантируется, что все буквенные символы относятся к латинскому алфавиту.
 # Примечание 2. Латинские гласные буквы: a, e, i, o, u, y.
 # ---------------------------------------------------------------
-import string
+
 
 class StrExtension:
 
     @staticmethod
     def remove_vowels(string1):
         vowels = ('a', 'e', 'i', 'o', 'u', 'y')
-        str_off_vowels = (char for char in string1 if char.lower() not in vowels) 
+        str_off_vowels = (
+            char for char in string1 if char.lower() not in vowels)
         return ''.join(str_off_vowels)
-
 
     @staticmethod
     def leave_alpha(string1):
-        symbols = (char for char in string1 if char.lower() not in string.ascii_lowercase)    
+        symbols = (char for char in string1 if char.lower()
+                   not in string.ascii_lowercase)
         return ''.join(symbols)
-
 
     @staticmethod
     def replace_all(string1: str, chars, char):
-        
+
         for char_old in chars:
             string1 = string1.replace(char_old, char)
-        
+
         return string1
-     
+
+
 # -----------------c регулярками-------------------------------
-import re
 
 
 class StrExtension:
@@ -1464,19 +1460,17 @@ class StrExtension:
 #         raise TypeError('Аргумент переданного типа не поддерживается')
 # ---------------------------------------------------------------
 
-from functools import singledispatchmethod
 
-class Processor:    
+class Processor:
     @singledispatchmethod
     @staticmethod
-    def process(data):     
+    def process(data):
         raise TypeError('Аргумент переданного типа не поддерживается')
-        
 
     @process.register(tuple)
     @staticmethod
     def _tuple_process(data):
-        return  tuple(sorted(data))
+        return tuple(sorted(data))
 
     @process.register(list)
     @staticmethod
@@ -1488,12 +1482,12 @@ class Processor:
     def _str_process(data):
         return data.upper()
 
-    
     @process.register(int)
-    @process.register(float) # @process.register(int | float)    # В Python 3.11 можно так
+    # @process.register(int | float)    # В Python 3.11 можно так
+    @process.register(float)
     @staticmethod
     def _numeric_process(data):
-        return data * 2 
+        return data * 2
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -1508,14 +1502,12 @@ class Processor:
 # Примечание 1. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
 # ---------------------------------------------------------------
 
-from functools import singledispatchmethod
 
 class Negator:
     @singledispatchmethod
     @staticmethod
     def neg(object):
         raise TypeError('Аргумент переданного типа не поддерживается')
-
 
     @neg.register(int)
     @neg.register(float)
@@ -1526,7 +1518,7 @@ class Negator:
     @neg.register(bool)
     @staticmethod
     def _str_neg(object):
-        return not object        
+        return not object
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -1542,15 +1534,13 @@ class Negator:
 # Примечание 2. Обратите внимание, что метод format() должен обрамлять апострофами строковые элементы коллекций.
 # ---------------------------------------------------------------
 
-from functools import singledispatchmethod
 
 class Formatter:
-    
+
     @singledispatchmethod
     @staticmethod
     def format(arg):
         raise TypeError('Аргумент переданного типа не поддерживается')
-
 
     @format.register(int)
     def _(arg):
@@ -1561,19 +1551,21 @@ class Formatter:
         print(f"Вещественное число: {arg}")
 
     @format.register(tuple)
-    def _(arg):        
+    def _(arg):
         print("Элементы кортежа: ", end='')
-        print(*arg, sep=', ' )
+        print(*arg, sep=', ')
 
     @format.register(list)
     def _(arg):
-        print("Элементы списка: ", end='')    # print(f'Элементы списка: {", ".join([str(obj) for obj in data])}')
-        print(*arg, sep=', ' )
-                
+        # print(f'Элементы списка: {", ".join([str(obj) for obj in data])}')
+        print("Элементы списка: ", end='')
+        print(*arg, sep=', ')
+
     @format.register(dict)
     def _(arg):
-        print("Пары словаря: ", end='')     # print(f'Пары словаря: {", ".join([str(pair) for pair in data.items()])}')
-        print(*arg.items(), sep=', ' )
+        # print(f'Пары словаря: {", ".join([str(pair) for pair in data.items()])}')
+        print("Пары словаря: ", end='')
+        print(*arg.items(), sep=', ')
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -1594,13 +1586,10 @@ class Formatter:
 #     age — свойство, доступное только для чтения, возвращающее текущий возраст в годах, то есть количество полных лет, прошедших с даты рождения на сегодняшний день
 # Примечание 1. Возраст в годах должен вычисляться так же, как и обычный возраст человека, то есть в день рождения его возраст увеличивается на один год.
 # ---------------------------------------------------------------
-from functools import singledispatchmethod
-from datetime import date, timedelta
-import re
+
 
 class BirthInfo:
 
-      
     @singledispatchmethod
     def __init__(self, birth_date) -> None:
         raise TypeError('Аргумент переданного типа не поддерживается')
@@ -1608,13 +1597,13 @@ class BirthInfo:
     @__init__.register(date)
     def _(self, birth_date):
         self.birth_date = birth_date
-        
+
     @__init__.register(str)
     def _(self, birth_date):
         # try:
-        #     self.birth_date = date.fromisoformat(birth_date) 
+        #     self.birth_date = date.fromisoformat(birth_date)
         # except:
-        #     raise TypeError('Аргумент переданного типа не поддерживается') 
+        #     raise TypeError('Аргумент переданного типа не поддерживается')
 
         if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', birth_date):
             raise TypeError('Аргумент переданного типа не поддерживается')
@@ -1624,17 +1613,15 @@ class BirthInfo:
     @__init__.register(tuple)
     def _(self, birth_date):
         self.birth_date = date(*birth_date)
-    
-    
-    
+
     @property
     def age(self):
         age = date.today().year - self.birth_date.year - 1
-        age += (date.today().month, date.today().day) >= (self.birth_date.month, self.birth_date.day)
+        age += (date.today().month,
+                date.today().day) >= (self.birth_date.month, self.birth_date.day)
         return age
 # ---------------------------------------------------------------
 
-from dateutil.relativedelta import relativedelta
 
 relativedelta(date1, date2).years
 # ---------------------------------------------------------------
@@ -1657,7 +1644,7 @@ class Config:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:                       # при первом вызове создаем объект
             cls._instance = object.__new__(cls)
-        return cls._instance                      
+        return cls._instance
 
     def __init__(self) -> None:
         self.program_name = 'GenerationPy'
@@ -1721,7 +1708,7 @@ class Rectangle:
         self.width = width
 
     def __repr__(self) -> str:
-        return f"Rectangle({self.length}, {self.width})" 
+        return f"Rectangle({self.length}, {self.width})"
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -1743,10 +1730,10 @@ class Vector:
         self.y = y
 
     def __repr__(self) -> str:
-        return f"Vector({self.x}, {self.y})" 
+        return f"Vector({self.x}, {self.y})"
 
     def __str__(self) -> str:
-        return f"Вектор на плоскости с координатами ({self.x}, {self.y})"     
+        return f"Вектор на плоскости с координатами ({self.x}, {self.y})"
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -1765,10 +1752,9 @@ class Vector:
 # <IP-адрес в виде четырех целых чисел, разделенных точками>
 # ---------------------------------------------------------------
 
-from functools import singledispatchmethod
 
 class IPAddress:
-    
+
     @singledispatchmethod
     def __init__(self, ipaddress) -> None:
         self.ipaddress = ipaddress
@@ -1778,29 +1764,31 @@ class IPAddress:
     def __init__(self, ipaddress) -> None:
         self.ipaddress = ''.join(ipaddress)
 
-
     def __repr__(self) -> str:
         return f"IPAddress('{self.ipaddress}')"
-    
-    
+
     def __str__(self) -> str:
-        return f"{self.ipaddress}" 
-   
+        return f"{self.ipaddress}"
+
 # ----------------if else------------------------------------------
+
+
 class IPAddress:
     def __init__(self, ipadress):
         if isinstance(ipadress, str):
             self.ipadress = ipadress
         elif isinstance(ipadress, (list, tuple)):
             self.ipadress = '.'.join(map(str, ipadress))
-            
+
     def __str__(self):
         return self.ipadress
-    
+
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.ipadress}')"
 
 # -------------------property-------------------------------------
+
+
 class IPAddress:
     def __init__(self, ipaddress: str | tuple):
         self.ipaddress = ipaddress
@@ -1811,7 +1799,8 @@ class IPAddress:
 
     @ipaddress.setter
     def ipaddress(self, data: str | tuple | list):
-        self._ipaddress = data if isinstance(data, str) else '.'.join(map(str, data))
+        self._ipaddress = data if isinstance(
+            data, str) else '.'.join(map(str, data))
 
     def __str__(self):
         return self._ipaddress
@@ -1820,9 +1809,8 @@ class IPAddress:
         return f"{type(self).__name__}('{self._ipaddress}')"
 
 
-
 # Класс PhoneNumber
-# 932 
+# 932
 # ализуйте класс PhoneNumber, описывающий телефонный номер. При создании экземпляра класс должен принимать один аргумент:
 #     phone_number — телефонный номер, представляющий строку из десяти цифр в одном из следующих форматов:
 #     dddddddddd
@@ -1833,12 +1821,12 @@ class IPAddress:
 # <телефонный номер в формате (ddd) ddd-dddd>
 # ---------------------------------------------------------------
 
-import re
 
 class PhoneNumber:
-    def __init__(self, phone_number: str) -> None:        
-        self.tel_number = re.findall('(\d{3})\s*(\d{3})\s*(\d{4})', phone_number)[0]
-        
+    def __init__(self, phone_number: str) -> None:
+        self.tel_number = re.findall(
+            '(\d{3})\s*(\d{3})\s*(\d{4})', phone_number)[0]
+
     def __repr__(self) -> str:
         return f"PhoneNumber('{''.join(self.tel_number)}')"
 
@@ -1852,13 +1840,14 @@ print(str(phone))
 print(repr(phone))
 # -------------------replace-----------------------------------
 
+
 class PhoneNumber:
     def __init__(self, phone_number):
         self.phone_number = phone_number.replace(' ', '')
-        
+
     def __str__(self):
         return f'({self.phone_number[:3]}) {self.phone_number[3:6]}-{self.phone_number[6:]}'
-    
+
     def __repr__(self):
         return f"PhoneNumber('{self.phone_number}')"
 
@@ -1881,22 +1870,19 @@ class AnyClass:
 
         for key, value in self.kwargs.items():
             if isinstance(value, str):
-                
-
-
 
                  '{}={!r}'.format(key, value)
 
-        self.l1 = ((f"{key}='{value}'") for key, value in self.kwargs.items() if isinstance(value, str))  )
+        self.l1 = ((f"{key}='{value}'") for key, value in self.kwargs.items() if isinstance(value, str)))
 
     def __repr__(self) -> str:
-        s = f"AnyClass({('{}, ' * len(self.l1))[:-2]})"
+        s=f"AnyClass({('{}, ' * len(self.l1))[:-2]})"
         return s.format(*self.l1)
-        
+
         return "AnyClass({})".format(*self.l1)
 
     def __str__(self) -> str:
-        s = f"AnyClass: {('{}, ' * len(self.l1))[:-2]}"
+        s=f"AnyClass: {('{}, ' * len(self.l1))[:-2]}"
         return s.format(*self.l1)
 # ---------------------------------------------------------------
 
@@ -1916,18 +1902,18 @@ class AnyClass:
 # ---------------------------------------------------------------
 class Vector:
     def __init__(self, x: int | float, y: int | float) -> None:
-        self.x = x
-        self.y = y
+        self.x=x
+        self.y=y
 
     def __repr__(self) -> str:
         return f"Vector({self.x}, {self.y})"
 
-    def __eq__(self, __o: object | tuple) -> bool:        
+    def __eq__(self, __o: object | tuple) -> bool:
         if isinstance(__o, Vector):
             return self.x == __o.x and self.y == __o.y
         elif isinstance(__o, tuple) == __o and len(__o) == 2:
             return (self.x, self.y) == __o
-        return NotImplemented   
+        return NotImplemented
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
@@ -1949,11 +1935,11 @@ class Vector:
 
 from functools import total_ordering
 
-@total_ordering
+@ total_ordering
 class Word:
     def __init__(self, word: str) -> None:
-        self.word = word
-    
+        self.word=word
+
     def __repr__(self) -> str:
         return "Word('{}')".format(self.word)
 
@@ -1964,103 +1950,522 @@ class Word:
         if isinstance(__o, Word):
             return len(self.word) == len(__o.word)
         return NotImplemented
-    
+
     def __lt__(self, __o: object) -> bool:
         if isinstance(__o, Word):
             return len(self.word) < len(__o.word)
         return NotImplemented
 
 
+
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс Month
+# 938
+# Реализуйте класс Month, описывающий месяц. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     year — год
+#     month — порядковый номер месяца
+# Экземпляр класса Month должен иметь следующее формальное строковое представление:
+# Month(<год>, <порядковый номер месяца>)
+# И следующее неформальное строковое представление:
+# <год>-<порядковый номер месяца>
+# Также экземпляры класса Month должны поддерживать все операции сравнения с помощью операторов ==, !=, >, <, >=, <=. Два Month объекта считаются равными, если их годы и порядковые номера месяцев совпадают. Month объект считается больше другого Month объекта, если его год больше. В случае если два Month объекта имеют равные года, большим считается тот, чей месяц больше. Методы, реализующие операции сравнения, должны уметь сравнивать как два Month объекта между собой, так и Month объект с кортежем из двух чисел, представляющих год и месяц.
+# Примечание 1. Если объект, с которым выполняется операция сравнения, некорректен, метод, реализующий эту операцию, должен вернуть константу NotImplemented.
+# ---------------------------------------------------------------
+from functools import total_ordering
+from typing import Tuple
+
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс Version
+# 886
+# Реализуйте класс Version, описывающий версию программного обеспечения. При создании экземпляра класс должен принимать один аргумент:
+#     version — строка из трех целых чисел, разделенных точками и описывающих версию ПО. Например, 2.8.1. Если одно из чисел не указано, оно считается равным нулю. Например, версия 2 равнозначна версии 2.0.0, а версия 2.8 равнозначна версии 2.8.0
+# Экземпляр класса Version должен иметь следующее формальное строковое представление:
+# Version('<версия ПО в виде трех целых чисел, разделенных точками>')
+# И следующее неформальное строковое представление:
+# <версия ПО в виде трех целых чисел, разделенных точками>
+# Также экземпляры класса Version должны поддерживать между собой все операции сравнения с помощью операторов ==, !=, >, <, >=, <=. Два Version объекта считаются равными, если все три числа в их версиях совпадают. Version объект считается больше другогоVersion объекта, если первое число в его версии больше. Или если второе число в его версии больше, если первые числа совпадают. Или если третье число в его версии больше, если первые и вторые числа совпадают.
+# Примечание 1. Если объект, с которым выполняется операция сравнения, некорректен, метод, реализующий эту операцию, должен вернуть константу NotImplemented.
+# ---------------------------------------------------------------
+
+from functools import total_ordering
+from itertools import zip_longest
+
+
+@ total_ordering
+class Version:
+    def __init__(self, version: str) -> None:
+
+        nums_version=map(int, version.split('.'))
+        index_elem=range(3)
+
+        # заполняю недостающие цифры нулями и добавляю только первые элементы кортежей
+        gen1=(i[0] for i in zip_longest(nums_version, index_elem, fillvalue=0))
+
+        self.write_full_version='.'.join(map(str, gen1))
+        self.num1, self.num2, self.num3=(
+            int(char) for char in self.write_full_version.split('.'))
+
+
+
+
+    def __repr__(self) -> str:
+        return f"Version('{self.write_full_version}')"
+
+    def __str__(self) -> str:
+        return self.write_full_version
+
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, Version):
+            return (self.num1, self.num2, self.num3) == (__o.num1, __o.num2, __o.num3)
+        return NotImplemented
+
+    def __lt__(self, __o: object) -> bool:
+        if isinstance(__o, Version):
+            return (self.num1, self.num2, self.num3) < (__o.num1, __o.num2, __o.num3)
+        return NotImplemented
+
+
+
+versions=[Version('2'), Version('2.1'), Version('1.9.1')]
+
+print(sorted(versions))
+print(min(versions))
+print(max(versions))
+
+
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс ReversibleString
+# 
+# Реализуйте класс ReversibleString, описывающий строку. При создании экземпляра класс должен принимать один аргумент:
+#     string — значение строки
+# Экземпляр класса ReversibleString должен иметь следующее неформальное строковое представление:
+# <значение строки>
+# Также экземпляр класса ReversibleString должен поддерживать унарный оператор -, результатом которого должен являться новый экземпляр класса ReversibleString со значением строки в обратном порядке.
+# Примечание 1. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
+# --------------------------------------------------------------
+class ReversibleString:
+    def __init__(self, string: str) -> None:
+        self.string = string
+
+    def __str__(self) -> str:
+        return f'{self.string}'
+
+
+    def __neg__(self):        
+        return ReversibleString(''.join(reversed(self.string)))
+
+string = ReversibleString('python')
+
+print(string)
+print(-string)
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс Money
+# 972
+# Реализуйте класс Money, описывающий денежную сумму в рублях. При создании экземпляра класс должен принимать один аргумент:
+#     amount — количество денег
+# Экземпляр класса Money должен иметь следующее неформальное строковое представление:
+# <количество денег> руб.
+# Также экземпляр класса Money должен поддерживать унарные операторы + и -:
+#     результатом унарного + должен являться новый экземпляр класса Money с неотрицательным количеством денег
+#     результатом унарного - должен являться новый экземпляр класса Money с отрицательным количеством денег
+# Примечание 1. Дополнительная проверка данных на корректность не требуется. Гарантируется, что реализованный класс используется только с корректными данными.
+# ---------------------------------------------------------------
+class Money:
+    def __init__(self, amount: int | float) -> None:
+        self.amount = amount
+
+    def __str__(self) -> str:
+        return f'{self.amount} руб.'
+
+    def __neg__(self):        
+        return Money(-abs(self.amount))
+
+    def __pos__(self):
+        return Money(abs(self.amount))
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс Vector
+# 959
+# Реализуйте класс Vector, описывающий вектор на плоскости. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     x — координата вектора по оси xx
+#     y — координата вектора по оси yy
+# Экземпляр класса Vector должен иметь следующее формальное строковое представление:
+# Vector(<координата x>, <координата y>)
+# И следующее неформальное строковое представление:
+# (<координата вектора по оси x>, <координата вектора по оси y>)
+# Также экземпляр класса Vector должен поддерживать унарные операторы + и -:
+#     результатом унарного + должен являться новый экземпляр класса Vector с исходными координатами
+#     результатом унарного - должен являться новый экземпляр класса Vector с координатами, взятыми с противоположным знаком
+# Наконец, при передаче экземпляра класса Vector в функцию abs() должен возвращаться его модуль.
+# Примечание 1. Модуль вектора с координатами (x,y)(x,y) вычисляется по формуле x2+y2x2+y2
+# ---------------------------------------------------------------
+class Vector:
+    def __init__(self, x, y) -> None:
+        self.x = x
+        self.y = y
+
+    def __repr__(self) -> str:
+        return f"Vector({self.x}, {self.y})"
+
+    def __str__(self) -> str:
+        return f'({self.x}, {self.y})'
+
+
+    def __pos__(self):
+        return Vector(self.x, self.y)
+
+    def __neg__(self):        
+        return Vector(-self.x, -self.y)
+
+
+    def __abs__(self):
+        return (self.x**2 + self.y**2)**0.5
+
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс ColoredPoint
+# 939
+# Реализуйте класс ColoredPoint, описывающий цветную точку на плоскости. При создании экземпляра класс должен принимать три аргумента в следующем порядке:
+#     x — координата точки по оси xx
+#     y — координата точки по оси yy
+#     color — цвет в формате RGB, представленный кортежем из трех целых чисел в диапазоне [0; 255], по умолчанию имеет значение (0, 0, 0)
+# Экземпляр класса ColoredPoint должен иметь три атрибута:
+#     x — координата точки по оси xx
+#     y — координата точки по оси yy
+#     color — цвет в формате RGB, представленный кортежем из трех целых чисел от 0 до 255
+# Также экземпляр класса ColoredPoint должен иметь следующее формальное строковое представление:
+# ColoredPoint(<координата x>, <координата y>, <цвет точки в виде трехэлементного кортежа>)
+# И следующее неформальное строковое представление:
+# (<координата x>, <координата y>)
+# Наконец, экземпляр класса ColoredPoint должен поддерживать унарные операторы +, - и ~:
+#     результатом унарного + должен являться новый экземпляр класса ColoredPoint c исходными координатами и цветом
+#     результатом унарного - должен являться новый экземпляр класса ColoredPoint c координатами, умноженными на минус единицу, и исходным цветом
+#     результатом унарного ~ должен являться новый экземпляр класса ColoredPoint c координатами, переставленными местами, и инвертированным цветом: значение каждой компоненты цвета отнимается от 255
+# ---------------------------------------------------------------
+class ColoredPoint:
+    def __init__(self, x, y, color=(0, 0, 0)) -> None:
+        self.x, self.y, self.color = x, y, color
+
+    def __repr__(self) -> str:
+        return f"ColoredPoint({self.x}, {self.y}, {self.color})"
+
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y})"
+
+    def __pos__(self):
+        return ColoredPoint(self.x, self.y, self.color)
+
+    def __neg__(self):        
+        return ColoredPoint(-self.x, -self.y, self.color)
+
+    def __invert__(self):
+        a, b, c = self.color
+        return ColoredPoint(self.y, self.x, (255 - a, 255 - b, 255 - c))
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+
+# Класс Matrix 🌶️🌶️
+#
+# Реализуйте класс Matrix, описывающий двумерную матрицу. При создании экземпляра класс должен принимать три аргумента в следующем порядке:
+#     rows — количество строк в матрице
+#     cols — количество столбцов в матрице
+#     value — начальное значение для элементов матрицы, по умолчанию имеет значение 0
+# Экземпляр класса Matrix должен иметь два атрибута:
+#     rows — количество строк в матрице
+#     cols — количество столбцов в матрице
+# Класс Matrix должен иметь два метода экземпляра:
+#     get_value() — метод, принимающий в качестве аргументов строку row и столбец col и возвращающий элемент матрицы со строкой row и столбцом col
+#     set_value() — метод, принимающий в качестве аргументов строку row, столбец col и значение value и устанавливающий в качестве значения элемента матрицы со строкой row и столбцом col значение value
+# Экземпляр класса Matrix должен иметь следующее формальное строковое представление:
+# Matrix(<количество строк в матрице>, <количество столбцов в матрице>)
+# Неформальным строковым представлением должна быть строка, в которой перечислены все элементы матрицы. Элементы строки матрицы должны быть разделены пробелом, строки матрицы должны быть разделены символом переноса строки \n. Например, для объекта Matrix(2, 3) неформальным строковым представлением должна быть строка 0 0 0\n0 0 0, которая при выводе будет отображаться следующим образом:
+# 0 0 0
+# 0 0 0
+# Также экземпляр класса Matrix должен поддерживать унарные операторы +, - и ~:
+#     результатом унарного + должен являться новый экземпляр класса Matrix c исходным количеством строк и столбцов и с исходными элементами
+#     результатом унарного - должен являться новый экземпляр класса Matrix c исходным количеством строк и столбцов и с элементами, взятыми с противоположным знаком
+#     результатом унарного ~ должен являться новый экземпляр класса Matrix, представляющий транспонированную матрицу
+# Наконец, при передаче экземпляра класса Matrix в функцию round() должен возвращаться новый экземпляр класса Matrix c исходным количеством строк и столбцов и с элементами, округленными с помощью функции round(). Во время передачи в функцию round() должна быть возможность в качестве второго необязательного аргумента указать целое число, определяющее количество знаков после запятой при округлении.
+# Примечание 1. Индексация строк и столбцов в матрице начинается с нуля.
+# ---------------------------------------------------------------
+
+class Matrix:
+    def __init__(self, rows: int, cols: int, value=0) -> None:
+        self.rows = rows
+        self.cols = cols
+       
+        self.matrix = [[value] * cols  for _ in range(rows)]        
     
+    
+    def get_value(self, row, col) -> int | float:
+        """метод, принимающий в качестве аргументов строку row и столбец col и возвращающий элемент матрицы со строкой row и столбцом col"""
+        return self.matrix[row][col]
+
+    def set_value(self, row, col, value) -> None:
+        """метод, принимающий в качестве аргументов строку row, столбец col и значение value и устанавливающий в качестве значения элемента матрицы со строкой row и столбцом col значение value"""
+        self.matrix[row][col] = value        
+
+
+
+    def __repr__(self) -> str:
+        return f"Matrix({self.rows}, {self.cols})"
+
+    def __str__(self) -> str:
+        l1 = [' '.join(map(str, rows)) for rows in self.matrix]            
+        return '\n'.join(l1)
+
+
+
+    def __pos__(self) -> "Matrix":
+        new_intance = Matrix(self.rows, self.cols)
+
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                new_intance.set_value(i, j, self.get_value(i, j))  # используем сеттер и геттер
+
+        return new_intance
+
+
+    def __neg__(self)-> "Matrix":        
+        new_intance = Matrix(self.rows, self.cols)
+
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                new_intance.set_value(i, j, -self.get_value(i, j)) # используем сеттер и геттер
+
+        return new_intance
+
+
+    def __invert__(self) -> "Matrix":
+        new_intance1 = Matrix(self.rows, self.cols)
+
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                new_intance1.set_value(i, j, self.get_value(i, j))   # используем сеттер и геттер
+
+        new_intance2 = Matrix(new_intance1.cols, new_intance1.rows)
+        
+        transponse = zip(*new_intance1.matrix)  # транспонируем new_intance1
+        new_intance2.matrix = transponse    
+        
+        return new_intance2        
+   
+    
+    def __round__(self, n=None) -> "Matrix":                
+        new_intance = Matrix(self.rows, self.cols)
+        
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if n is None:
+                    new_intance.set_value(i, j, round(self.get_value(i, j)))
+                new_intance.set_value(i, j, round(self.get_value(i, j), n))
+
+        return new_intance
+
+
+#------тест---
+matrix = Matrix(5, 10)
+
+floats = [[7125.900408, 633.354471, -9237.8575119, 2865.3825158, 5509.2609336, 8712.260779, 8317.523947, 2512.4736075,
+           -3087.5496014, 3861.68814],
+          [-7852.451832, 376.465911, -8142.7867326, -6921.8371407, 3735.7516227, -3322.8019034, 7115.79968,
+           -8949.9313078, -7032.4347679, -5217.8236385],
+          [-7817.9657992, -4319.716346, -1038.6294521, -2959.8970273, -9263.5713405, 9358.607686, 1429.6576196,
+           -9484.68116, 639.6343972, 3444.9938213],
+          [-2844.2405153, -2078.2441427, 6812.1367017, 112.3910618, -1116.8662449, 5042.7026276, -5981.6930342,
+           4370.9173164, -8851.7648474, 8990.6896422],
+          [90.8102435, 5256.6137481, -9743.8477321, -131.5501688, -5920.5976176, 4963.8336619, -4907.3622526,
+           8531.2015615, -244.3630074, 3421.8817151]]
+
+for r in range(5):
+    for c in range(10):
+        matrix.set_value(r, c, floats[r][c])
+
+print('НАЧАЛЬНАЯ')
+print(matrix)
+print()
+print('+++++')
+print(+matrix)
+print()
+print('-------')
+print(-matrix)
+print()
+print('ТРАНСПОНИРОВАНАЯ')
+print(~matrix)
+print()
+print('ОКРУГЛЕНИЕ')
+print(round(matrix, 2))
+# ---------------------------------------------------------------
+
+# ---------------------------------------------------------------
+
+   
+# Класс FoodInfo
+# 943
+# Реализуйте класс FoodInfo, описывающий пищевую ценность продуктов. При создании экземпляра класс должен принимать три аргумента в следующем порядке:
+#     proteins — количество белков в граммах
+#     fats — количество жиров в граммах
+#     carbohydrates — количество углеводов в граммах
+# Экземпляр класса FoodInfo должен иметь три атрибута:
+#     proteins — количество белков в граммах
+#     fats — количество жиров в граммах
+#     carbohydrates — количество углеводов в граммах
+# И следующее формальное строковое представление:
+# FoodInfo(<количество белков>, <количество жиров>, <количество углеводов>)
+# Также экземпляры класса FoodInfo должны поддерживать между собой операцию сложения с помощью оператора +, результатом которой должен являться новый экземпляр класса FoodInfo с суммарным количеством белков, жиров и углеводов исходных экземпляров.
+# Наконец, экземпляр класса FoodInfo должен поддерживать операции умножения, деления и деления нацело на число n с помощью операторов *, / и // соответственно:
+#     результатом умножения должен являться новый экземпляр класса FoodInfo, количество белков, жиров и углеводов которого умножены на n
+#     результатом деления должен являться новый экземпляр класса FoodInfo, количество белков, жиров и углеводов которого поделены на n
+#     результатом деления нацело должен являться новый экземпляр класса FoodInfo, количество белков, жиров и углеводов которого поделены нацело на n
+# Примечание 1. Числами будем считать экземпляры классов int и float. Также будем гарантировать, что экземпляр класса FoodInfo всегда делится на ненулевое число.
+# Примечание 2. Если объект, с которым выполняется арифметическая операция, некорректен, метод, реализующий эту операцию, должен вернуть константу NotImplemented.
+# ---------------------------------------------------------------
+
+from typing import TypeVar
+
+Self = TypeVar("Self", bound="FoodInfo")
+
+
+
+class FoodInfo:
+    def __init__(self, proteins: int | float, fats: int | float, carbohydrates: int | float) -> None:
+        self.proteins = proteins
+        self.fats = fats
+        self.carbohydrates = carbohydrates
+
+
+    def __repr__(self) -> str:
+        return f"FoodInfo({self.proteins}, {self.fats}, {self.carbohydrates})"
+
+    
+    def __add__(self, other: object) -> Self:
+        if isinstance(other, FoodInfo):
+            return FoodInfo(self.proteins + other.proteins, self.fats + other.fats, self.carbohydrates + other.carbohydrates)
+        return NotImplemented
+
+    def __mul__(self, other: int) -> Self:
+        if isinstance(other, (int, float)):
+            return FoodInfo(self.proteins * other, self.fats * other, self.carbohydrates * other)
+        return NotImplemented
+   
+    def __truediv__(self, other: int) -> Self:
+        if isinstance(other, (int, float)):
+            return FoodInfo(self.proteins / other, self.fats / other, self.carbohydrates / other)
+        return NotImplemented
+
+    def __floordiv__(self, other: int) -> Self:
+        if isinstance(other, (int, float)):
+            return FoodInfo(self.proteins // other, self.fats // other, self.carbohydrates // other)
+        return NotImplemented
+
+#--------tests----------
+pfc = [(751.26, 778.77, 947.51), (597.41, 508.5, 532.96), (800.55, 617.5, 525.14), (741.99, 785.53, 664.71),
+       (525.69, 892.41, 541.41), (888.8, 802.56, 868.78), (609.65, 855.43, 949.44), (705.25, 592.28, 738.72),
+       (514.88, 617.22, 557.5), (948.62, 938.7, 817.17), (783.98, 628.32, 686.38), (894.9, 815.81, 715.19),
+       (586.79, 826.68, 637.5), (670.53, 683.69, 841.56), (583.9, 607.34, 853.35), (954.67, 950.76, 822.19),
+       (718.94, 658.12, 537.2), (556.53, 686.17, 622.61), (699.8, 872.49, 908.3), (622.3, 920.97, 801.17)]
+
+FoodInfo.__round__ = lambda instance: FoodInfo(
+    round(instance.proteins, 2),
+    round(instance.fats, 2),
+    round(instance.carbohydrates, 2)
+)
+
+food1 = FoodInfo(1000, 2000, 3000)
+for p, f, c in pfc:
+    food2 = FoodInfo(p, f, c)
+    add_food = food1 + food2
+    mul_food = food1 * p
+    truediv_food = food1 // c
+    print(round(add_food), round(mul_food), round(truediv_food))
+
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
 
 
+# Класс Vector
 #
-#
-#
+# Реализуйте класс Vector, описывающий вектор на плоскости. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     x — координата вектора по оси xx
+#     y — координата вектора по оси yy
+# Экземпляр класса Vector должен иметь следующее формальное строковое представление:
+# Vector(<координата x>, <координата y>)
+# Также экземпляры класса Vector должны поддерживать между собой операции сложения и вычитания с помощью операторов + и - соответственно:
+#     результатом сложения должен являться новый экземпляр класса Vector, координата по оси xx которого равна сумме координат по оси xx исходных векторов, координата по оси yy — сумме координат по оси yy исходных векторов
+#     результатом вычитания должен являться новый экземпляр класса Vector координата по оси xx которого равна разности координат по оси xx исходных векторов с учетом порядка, координата по оси yy — разности координат по оси yy исходных векторов с учетом порядка
+# Наконец, экземпляр класса Vector должен поддерживать операции умножения и деления на число n с помощью операторов * и / соответственно:
+#     результатом умножения должен являться новый экземпляр класса Vector, координаты которого умножены на n
+#     результатом деления должен являться новый экземпляр класса Vector, координаты которого поделены на n
+# Операция умножения должна быть выполнима независимо от порядка операндов, то есть должна быть возможность умножить как вектор на число, так и число на вектор.
+# Примечание 1. Числами будем считать экземпляры классов int и float. Также будем гарантировать, что экземпляр класса Vector всегда делится на ненулевое число.
+# Примечание 2. Если объект, с которым выполняется арифметическая операция, некорректен, метод, реализующий эту операцию, должен вернуть константу NotImplemented.
 # ---------------------------------------------------------------
+class Vector:
+    def __init__(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
 
-# ---------------------------------------------------------------
+    def __repr__(self) -> str:
+        return f"Vector({self.x}, {self.y})"
 
-# ---------------------------------------------------------------
+    def __add__(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x + other.x, self.y + other.y)
+        return NotImplemented
 
+    def __sub__(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x - other.x, self.y - other.y)
+        return NotImplemented
 
-#
-#
-#
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-
-#
-#
-#
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-
-#
-#
-#
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
+    
+    
+    def __truediv__(self, n):
+        if isinstance(n, (int, float)):
+            return Vector(self.x / n, self.y / n)
+        return NotImplemented
+    
+    def __rtruediv__(self, n):
+        if isinstance(n, (int, float)):
+            return Vector(n / self.x, n / self.y)
+        return NotImplemented
 
 
-#
-#
-#
-# ---------------------------------------------------------------
+    def __mul__(self, n):
+        if isinstance(n, (int, float)):
+            return Vector(self.x * n, self.y * n)
+        return NotImplemented
+    
+    def __rmul__(self, n):
+        if isinstance(n, (int, float)):
+            return Vector(n * self.x, n * self.y)
+        return NotImplemented
 
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-
-#
-#
-#
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-
-#
-#
-#
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-
-#
-#
-#
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-# ---------------------------------------------------------------
-
-
-#
-#
-#
-# ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
 
