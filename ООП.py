@@ -2472,12 +2472,70 @@ class Vector:
 # ---------------------------------------------------------------
 
 
-#
-#
-#
+# Класс SuperString
+# 893
+# Реализуйте класс SuperString, описывающий строку. При создании экземпляра класс должен принимать один аргумент:
+#     string — значение строки
+# Экземпляр класса SuperString должен иметь следующее неформальное строковое представление:
+# <значение строки>
+# Помимо этого, экземпляры класса SuperString должны поддерживать между собой операцию сложения с помощью оператора +, результатом которой должен являться новый экземпляр класса SuperString, представляющий конкатенацию исходных.
+# Также экземпляр класса SuperString должен поддерживать операции умножения, деления, побитового сдвига влево и побитового сдвига вправо на целое число n с помощью операторов *, /, << и >> соответственно:
+#     результатом умножения должен являться новый экземпляр класса SuperString, представляющий исходную строку, умноженную на n
+#     результатом деления должен являться новый экземпляр класса SuperString, представляющий строку из первых m символов исходной строки, где m — длина исходной строки, поделенная нацело на n
+#     результатом побитового сдвига влево должен являться новый экземпляр класса SuperString, представляющий исходную строку без последних n символов. Если n больше или равно длине исходной строки, результатом должен являться экземпляр класса SuperString, представляющий пустую строку
+#     результатом побитового сдвига вправо должен являться новый экземпляр класса SuperString, представляющий исходную строку без первых n символов. Если n больше или равно длине исходной строки, результатом должен являться экземпляр класса SuperString, представляющий пустую строку
+# Операция умножения должна быть выполнима независимо от порядка операндов, то есть должна быть возможность умножить как строку на число, так и число на строку.
+# Примечание 1. Будем гарантировать, что экземпляр класса SuperString всегда делится на ненулевое число.
+# Примечание 2. Если объект, с которым выполняется арифметическая операция, некорректен, метод, реализующий эту операцию, должен вернуть константу NotImplemented.
 # ---------------------------------------------------------------
+class SuperString:
+    def __init__(self, string: str) -> None:
+        self.string = string
 
-# ---------------------------------------------------------------
+    def __str__(self) -> str:
+        return self.string
+
+    def __add__(self, other):
+        if isinstance(other, SuperString):
+            return SuperString(self.string + other.string) 
+        return NotImplemented
+
+    
+    def __mul__(self, n: int | float) -> 'SuperString':
+        if isinstance(n, (int, float)):
+            return SuperString(self.string * n)
+        return NotImplemented
+
+    def __rmul__(self, n: int | float) -> 'SuperString':
+        if isinstance(n, (int, float)):
+            return SuperString(n * self.string)
+        return NotImplemented
+
+    def __truediv__(self, n: int | float) -> 'SuperString':
+        if isinstance(n, (int, float)):
+            s = len(self.string) // n
+            return SuperString(self.string[:s])
+        return NotImplemented
+
+    
+    
+    def __lshift__(self, n: int | float) -> 'SuperString':
+        if isinstance(n, (int, float)):
+            if n <= len(self.string):
+                if n == 0:
+                    return SuperString(self.string)
+                return SuperString(self.string[:-n])
+            else:
+                return SuperString('')
+        return NotImplemented
+
+    def __rshift__(self, n: int | float) -> 'SuperString':
+        if isinstance(n, (int, float)):
+            if n <= len(self.string):
+                return SuperString(self.string[n:])
+            else:
+                return SuperString('')
+        return NotImplemented
 
 # ---------------------------------------------------------------
 
