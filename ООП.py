@@ -2362,7 +2362,7 @@ class FoodInfo:
         return f"FoodInfo({self.proteins}, {self.fats}, {self.carbohydrates})"
 
     
-    def __add__(self, other: object) -> Self:
+    def __add__(self, other: Self) -> Self:
         if isinstance(other, FoodInfo):
             return FoodInfo(self.proteins + other.proteins, self.fats + other.fats, self.carbohydrates + other.carbohydrates)
         return NotImplemented
@@ -2540,11 +2540,78 @@ class SuperString:
 # ---------------------------------------------------------------
 
 
-#
-#
-#
+# Класс Time
+# 880
+# Реализуйте класс Time, описывающий время на цифровых часах. При создании экземпляра класс должен принимать два аргумента в следующем порядке:
+#     hours — количество часов; каждые 24 часа должны преобразовываться в 0 часов
+#     minutes — количество минут; каждые 60 минут должны преобразовываться в 1 час
+# Экземпляр класса Time должен иметь следующее неформальное строковое представление:
+# <количество часов в формате HH>:<количество минут в формате MM>
+# Также экземпляры класса Time должны поддерживать между собой операцию сложения с помощью операторов + и +=:
+#     результатом сложения с помощью оператора + должен являться новый экземпляр класса Time, количество часов которого равно сумме часов исходных экземпляров класса Time, количество минут — сумме минут исходных экземпляров класса Time
+#     результатом сложения с помощью оператора += должен являться левый экземпляр класса Time, количество часов которого увеличено на количество часов правого экземпляра класса Time, количество минут — на количество минут правого экземпляра класса Time
+# Примечание 1. Если объект, с которым выполняется арифметическая операция, некорректен, метод, реализующий эту операцию, должен вернуть константу NotImplemented.
 # ---------------------------------------------------------------
 
+from typing import TypeVar
+
+Self = TypeVar("Self", bound="Time")
+
+class Time:
+    def __init__(self, hours: int, minutes: int) -> None:
+        # устанавливаем корректное время сеттером
+        self.set_correct_hours(hours)
+        self.set_correct_minutes(minutes)
+        
+    
+    def get_correct_hours(self):
+        """получить кол-во часов"""        
+        return self.hours
+    
+    def set_correct_hours(self, hours):
+        """сеттер, устанавливает корректное кол-во часов"""
+        self.hours = hours % 24
+        
+
+
+    def get_correct_minutes(self):
+        """получить кол-во минут"""
+        return self.minutes
+
+    def set_correct_min(self, minutes):
+        """сеттер, устанавливает корректное кол-во минут"""     
+        time_min = divmod(minutes, 60)        
+        self.minutes = time_min[1]
+        self.hours += time_min[0]
+    
+    
+    
+    def __str__(self) -> str:
+        return f"{str(self.hours).zfill(2)}:{str(self.minutes).zfill(2)}"
+
+    
+    
+    def __add__(self, other: Self) -> Self:
+        if isinstance(other, Time):
+            return Time(self.hours + other.hours, self.minutes + other.minutes)
+        return NotImplemented
+
+    def __radd__(self, other: Self) -> Self:
+        if isinstance(other, Time):
+            return Time(other.hours + self.hours, other.minutes + self.minutes)
+        return NotImplemented
+
+    def __iadd__(self, other: Self) -> Self:
+        if isinstance(other, Time):
+            self.hours += other.hours
+            self.minutes += other.minutes
+            
+            # устанавливаем корректное время
+            self.set_correct_hours(self.get_correct_hours())
+            self.set_correct_minutes(self.get_correct_minutes())            
+            return self
+        
+        return NotImplemented
 # ---------------------------------------------------------------
 
 # ---------------------------------------------------------------
