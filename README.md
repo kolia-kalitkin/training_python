@@ -1,2 +1,2 @@
 # training_python
-Мои решение задач на Python из курсов Stepik
+Мои решения задач на Python из курсов Stepik
